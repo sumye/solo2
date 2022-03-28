@@ -5,8 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ContentsRequestDto {
-    private String title;
+public class CommentsRequestDto {
     private String name;
-    private String contents;
+    private String comments;
 }

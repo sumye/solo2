@@ -60,6 +60,8 @@
                     </div>`;
         }
 
+
+
     </script>
 
     <style>
@@ -215,6 +217,36 @@
             font-size: 30px;
             position: absolute;
         }
+
+        textarea.field {
+            width: 502px !important;
+            height: 146px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            border: none;
+            padding: 18px;
+            resize: none;
+        }
+
+        textarea.field::placeholder {
+            width: 216px;
+            height: 16px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1;
+            letter-spacing: -0.96px;
+            text-align: left;
+            color: #868e96;
+        }
+
+        .form-control {
+            height: 30px;
+            margin-bottom: 10px;
+            margin-left: 70px;
+        }
     </style>
 
 </head>
@@ -240,30 +272,18 @@
         <form id="my_form" method="post" action="/user/logout">
             <a id="logout-text" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</a>
         </form>
+
     </div>
 
+
     <div id="cards-box" class="area-read">
-        <div class="card">
-            <!-- date/name 영역 -->
-            <div class="metadata">
-                <div class="date">
-                    October 10, 2020
-                </div>
-                <div class="name">
-                    anonymous
-                </div>
-            </div>
-            <!-- contents 조회영역-->
-            <h2>asd</h2>
-            <div class="contents">
-                <div id="1-contents" class="text">
-                    dsafnkalfklewakflekelafkleajfkleafkldsankflenwaklfnekwlafneklwanfkelawnfkelanfkleanfklew
-                </div>
-                <div id="1-editarea" class="edit">
-                    <!--  <textarea id="1-textarea" class="te-edit" name="" id="" cols="30" rows="5"></textarea>-->
-                </div>
-            </div>
-        </div>
+
+    </div>
+    <div class="area-write">
+
+            <textarea class="field" placeholder="댓글을 적어주세요" name="contents" id="contents" cols="30"
+                      rows="10"></textarea>
+        <img src="../static/images/send.png" alt="" onclick="writeComments()">
     </div>
 </div>
 </body>

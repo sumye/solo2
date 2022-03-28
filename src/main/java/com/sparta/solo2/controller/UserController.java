@@ -4,11 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.solo2.dto.SignupRequestDto;
 import com.sparta.solo2.service.KakaoUserService;
 import com.sparta.solo2.service.UserService;
+import com.sparta.solo2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UserController {
@@ -36,9 +38,14 @@ public class UserController {
 
     // 회원 가입 요청 처리
     @PostMapping("/user/signup")
-    public String registerUser(SignupRequestDto requestDto) {
-        userService.registerUser(requestDto);
-        return "redirect:/user/login";
+    public String registerUser(SignupRequestDto requestDto, RedirectAttributes rttr) {
+        String str = userService.registerUser(requestDto);
+        if ( str.equals("success") ) {
+            return "redirect:/user/login";
+        }
+        rttr.addFlashAttribute("response", str);
+        System.out.println(str);
+        return "redirect:/user/signup";
     }
 
     @GetMapping("/user/kakao/callback")

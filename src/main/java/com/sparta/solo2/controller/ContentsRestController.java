@@ -4,8 +4,10 @@ package com.sparta.solo2.controller;
 import com.sparta.solo2.model.Contents;
 import com.sparta.solo2.repository.ContentsRepository;
 import com.sparta.solo2.dto.ContentsRequestDto;
+import com.sparta.solo2.security.UserDetailsImpl;
 import com.sparta.solo2.service.ContentsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,8 +35,11 @@ public class ContentsRestController {
 
     // 게시글 생성
     @PostMapping("/api/contents")
-    public Contents createContents(@RequestBody ContentsRequestDto requestDto) {
+    public Contents createContents(@RequestBody ContentsRequestDto requestDto , @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        requestDto.setName(userDetails.getUsername()); ///로그인한 유저로 바꾸기위해서 추가
+
         Contents Contents = new Contents(requestDto);
+
         return ContentsRepository.save(Contents);
     }
 

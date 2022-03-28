@@ -1,5 +1,6 @@
 package com.sparta.solo2.model;
 
+import com.sparta.solo2.dto.CommentsRequestDto;
 import com.sparta.solo2.dto.ContentsRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 @Getter // get 함수를 일괄적으로 만들어줍니다.
 @NoArgsConstructor // 기본 생성자를 만들어줍니다.
 @Entity // DB 테이블 역할을 합니다.
-public class Contents extends Timestamped {
+public class Comments extends Timestamped {
 
     // ID가 자동으로 생성 및 증가합니다.
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,32 +18,31 @@ public class Contents extends Timestamped {
     private Long id;
 
     // nullable = false 반드시 값을 가지도록 합니다.
-    @Column(nullable = false)
-    private String title;
+
 
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
-    private String contents;
+    private String comments;
 
-    public Contents(String title, String name, String contents) {
-        this.title = title;
+    public Comments( String name, String contents) {
+
         this.name = name;
-        this.contents = contents;
+        this.comments = comments;
     }
 
     // 게시글 생성
-    public Contents(ContentsRequestDto requestDto ) {
-        this.title = requestDto.getTitle();
+    public Comments(CommentsRequestDto requestDto ) {
+
         this.name = requestDto.getName();
-        this.contents = requestDto.getContents();
+        this.comments = requestDto.getComments();
     }
 
     // 게시글 수정
-    public void update(ContentsRequestDto requestDto) {
-        this.title = requestDto.getTitle();
+    public void update(CommentsRequestDto requestDto) {
+
         this.name = requestDto.getName();
-        this.contents = requestDto.getContents();
+        this.comments = requestDto.getComments();
     }
 }
