@@ -13,4 +13,16 @@ public class HomeController {
         model.addAttribute("username", userDetails.getUsername());
         return "index";
     }
+
+    @GetMapping("/write.html")
+    public String write(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        model.addAttribute("username2", userDetails.getUsername());
+        return "write";
+    }
+
+    @GetMapping("/detail.html")
+    public String detail(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        model.addAttribute("username3", userDetails.getUsername());
+        return "detail";
+    }
 }

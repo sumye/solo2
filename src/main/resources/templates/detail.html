@@ -231,6 +231,15 @@
     <div class="header">
         <h2>항해99 바다 위 대나무숲<br><br>
             맘껏 외치세요 무야호!</h2>
+        <div id="header-title-login-user">
+            <span th:text="${username3}"></span> 님의
+        </div>
+        <div id="header-title-select-shop">
+            블로그
+        </div>
+        <form id="my_form" method="post" action="/user/logout">
+            <a id="logout-text" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</a>
+        </form>
     </div>
 
     <div id="cards-box" class="area-read">

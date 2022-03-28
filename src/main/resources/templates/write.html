@@ -41,7 +41,7 @@
                 data: JSON.stringify(data),
                 success: function (response) {
                     alert('메시지가 성공적으로 작성되었습니다.');
-                    location.href = 'index.html';
+                    location.href = '/';
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert(xhr.status);
@@ -183,6 +183,15 @@
     <div class="header">
         <h2>항해99 바다 위 대나무숲<br><br>
             맘껏 외치세요 무야호!</h2>
+        <div id="header-title-login-user">
+            <span th:text="${username2}"></span> 님의
+        </div>
+        <div id="header-title-select-shop">
+            블로그
+        </div>
+        <form id="my_form" method="post" action="/user/logout">
+            <a id="logout-text" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</a>
+        </form>
     </div>
     <div class="area-write">
         <div class="form-floating mb-3">
@@ -191,7 +200,7 @@
         </div>
         <textarea class="field" placeholder="공유하고 싶은 소식을 입력해주세요" name="contents" id="contents" cols="30"
                   rows="10"></textarea>
-        <img src="images/send.png" alt="" onclick="writePost()">
+        <img src="../static/images/send.png" alt="" onclick="writePost()">
     </div>
 </div>
 </body>
