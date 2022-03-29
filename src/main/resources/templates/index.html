@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -214,26 +215,25 @@
 
 <body>
 <div class="background-header">
+    <a sec:authorize="!isAuthenticated()" href="/user/login" id="login-text">로그인</a> <a sec:authorize="!isAuthenticated()" href="/user/signup" id="signup-text">회원가입</a>
+
+    <form id="my_form" method="post" action="/user/logout">
+        <a sec:authorize="isAuthenticated()" id="logout-text" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</a>
+    </form>
 </div>
 <div class="background-body">
 
 </div>
 <div class="wrap">
     <div class="header">
-        <h2>항해99 바다 위 대나무숲<br><br>
+        <h2>항해99 바다 위 대나무숲<br> <span th:text="${username}"></span> 님<br>
+
             맘껏 외치세요 무야호!</h2>
-        <div id="header-title-login-user">
-            <span th:text="${username}"></span> 님의
-        </div>
-        <div id="header-title-select-shop">
-            블로그
-        </div>
-        <form id="my_form" method="post" action="/user/logout">
-            <a id="logout-text" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</a>
-        </form>
+
+
     </div>
     <div class="to-write">
-        <button type="button" class="btn btn-primary" onclick="location.href='write.html'"><b>글 쓰 기</b></button>
+        <button  sec:authorize="isAuthenticated()" type="button" class="btn btn-primary" onclick="location.href='write.html'"><b>글 쓰 기</b></button>
     </div>
     <div id="cards-box" class="area-read">
         <div class="card">

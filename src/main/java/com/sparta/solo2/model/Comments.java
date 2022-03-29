@@ -1,7 +1,6 @@
 package com.sparta.solo2.model;
 
 import com.sparta.solo2.dto.CommentsRequestDto;
-import com.sparta.solo2.dto.ContentsRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,34 +14,35 @@ public class Comments extends Timestamped {
     // ID가 자동으로 생성 및 증가합니다.
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Long id;
+    private Long commentsId;
 
     // nullable = false 반드시 값을 가지도록 합니다.
 
 
     @Column(nullable = false)
-    private String name;
+    private String username;
 
     @Column(nullable = false)
     private String comments;
 
-    public Comments( String name, String contents) {
+    @Column(nullable = false)
+    private Long contentsId;
 
-        this.name = name;
-        this.comments = comments;
-    }
 
     // 게시글 생성
-    public Comments(CommentsRequestDto requestDto ) {
+    public Comments(CommentsRequestDto requestDto) {
 
-        this.name = requestDto.getName();
+        this.username = requestDto.getUsername();
         this.comments = requestDto.getComments();
+        this.contentsId = requestDto.getContentsId();
     }
 
     // 게시글 수정
-    public void update(CommentsRequestDto requestDto) {
+    public Long update(CommentsRequestDto requestDto) {
 
-        this.name = requestDto.getName();
+        this.username = requestDto.getUsername();
         this.comments = requestDto.getComments();
+        this.contentsId = requestDto.getContentsId();
+        return null;
     }
 }

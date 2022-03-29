@@ -32,6 +32,8 @@ dependencies {
     // Thymeleaf (뷰 템플릿 엔진)
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.6'
+    // Thymeleaf 에서 springsecurity 의존성 설정
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 }
 
 tasks.named('test') {

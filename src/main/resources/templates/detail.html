@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -11,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <!--    font-family: 'Jua', sans-serif;-->
 
-    <script>
+    <script th:inline="javascript">
         $(document).ready(function () {
             getMessages();
         })
@@ -59,6 +60,100 @@
                         </div>
                     </div>`;
         }
+
+
+        function isValidComments(comments) {
+            if (comments == '') {
+                alert('내용을 입력해주세요');
+                return false;
+            }
+            return true;
+        }
+
+        function writeComments() {
+            let comments = $('#comments').val();
+            let username = $('#username').val();
+
+                let contentsId = location.href.split("id=")[1];
+                console.log(contentsId);
+
+            if (isValidComments(comments) == false) {
+                return;
+            }
+            if (isValidComments(username) == false) {
+                return;
+            }
+
+
+            let data = { 'username': username, 'comments': comments ,'contentsId': contentsId};
+            $.ajax({
+                type: "POST",
+                url: "/api/comments",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert('메시지가 성공적으로 작성되었습니다.');
+                    location.href = `/detail.html?id=${id}`;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        }
+        //////write.html에서 가져왓음 여까지 포스트방식 이후는 인덱스에서 가져온 겟방식
+
+        $(document).ready(function () {
+            getComments();
+        })
+
+        // 댓글을 불러옵니다.
+        function getComments() {
+            $('#cards-box2').empty();
+            $.ajax({
+                type: "GET",
+                url: "/api/comments",
+                data: {},
+                success: function (response) {
+                    for (let i = 0; i < response.length; i++) {
+                        let post = response[i];
+                        let id = post['id'];
+                        let username = post['username'];
+                        let comments = post['comments'];
+                        let contentsId = post['contentsId'];
+                        let modifiedAt = post['modifiedAt'];
+                        console.log(comments);
+                        addComments(id, username, comments, contentsId, modifiedAt);
+                    }
+                }
+            });
+        }
+
+        function addComments(id, username, comments, contentsId, modifiedAt) {
+            let tempHtml = makeComments(id, username, comments, contentsId, modifiedAt);
+            $('#cards-box2').append(tempHtml);
+        }
+
+        function makeComments(id, username, comments,contentsId, modifiedAt) {
+            return `
+                        <div class="card">
+                            <div class="metadata">
+                               <div ${id}="${id}-name" class="name">
+                                   ${username}
+                               </div>
+                               <div class="date">
+                                   ${modifiedAt}
+                               </div>
+                            </div>
+
+                            <div class="contents" id="${id}-contents" >
+                               ${comments}
+                            </div>
+
+                        </div>`;
+        }
+
+
 
 
 
@@ -193,7 +288,7 @@
         }
 
         .contents div.edit {
-            display: none;
+            display: block;
         }
 
         #cards-box {
@@ -253,25 +348,23 @@
 
 <body>
 <div class="background-header">
+    <a sec:authorize="!isAuthenticated()" href="/user/login" id="login-text">로그인</a> <a sec:authorize="!isAuthenticated()" href="/user/signup" id="signup-text">회원가입</a>
+    <form id="my_form" method="post" action="/user/logout">
+        <a sec:authorize="isAuthenticated()" id="logout-text" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</a>
+    </form>
 
 </div>
 <div class="background-body">
 
 </div>
 <div class="wrap">
+
     <a href="/" id="home">Home</a>
     <div class="header">
-        <h2>항해99 바다 위 대나무숲<br><br>
+        <h2>항해99 바다 위 대나무숲<br><span th:text="${username3}"></span> 님<br>
             맘껏 외치세요 무야호!</h2>
-        <div id="header-title-login-user">
-            <span th:text="${username3}"></span> 님의
-        </div>
-        <div id="header-title-select-shop">
-            블로그
-        </div>
-        <form id="my_form" method="post" action="/user/logout">
-            <a id="logout-text" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</a>
-        </form>
+
+
 
     </div>
 
@@ -281,9 +374,12 @@
     </div>
     <div class="area-write">
 
-            <textarea class="field" placeholder="댓글을 적어주세요" name="contents" id="contents" cols="30"
+            <textarea class="field" placeholder="댓글을 적어주세요" name="contents" id="comments" cols="30"
                       rows="10"></textarea>
         <img src="../static/images/send.png" alt="" onclick="writeComments()">
+    </div>
+    <div id="cards-box2" class="area-read">
+
     </div>
 </div>
 </body>

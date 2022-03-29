@@ -25,12 +25,12 @@
 //             }
 //         }
 
-        $(function() {
+        function fail() {
             let response = [[${response}]];
-            if (response != '') {
+            if (response != null) {
                 alert(response);
             }
-        })
+        }
     </script>
 </head>
 <body>
@@ -52,6 +52,7 @@
 <!--            <input id="admin-token" type="password" name="adminToken" placeholder="관리자 암호" class="login-input-box" style="display:none">-->
 <!--        </div>-->
         <button id="login-id-submit">회원 가입</button>
+        <p th:text="${response}" , style="color:red"></p>
     </form>
 </div>
 </body>
