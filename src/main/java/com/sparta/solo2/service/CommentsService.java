@@ -25,12 +25,12 @@ public class CommentsService {
 
 
         //댓글 수정
-    @Transactional
-    public Long update(Long id, CommentsRequestDto requestDto) {
-        Comments Comments = CommentsRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
-        );
-
-        return Comments.update(requestDto);
-    }
+        @Transactional
+        public Long update(Long id, CommentsRequestDto requestDto) {
+            Comments comments = CommentsRepository.findById(id).orElseThrow(
+                    () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
+            );
+            comments.update(requestDto);
+            return comments.getCommentsId();
+        }
 }

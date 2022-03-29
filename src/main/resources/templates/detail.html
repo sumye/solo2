@@ -108,20 +108,21 @@
         function getComments() {
             let contentsId = location.href.split("id=")[1];
             $('#cards-box2').empty();
-                console.log(4)
+
             $.ajax({
                 type: "GET",
                 url: "/api/comments/"+contentsId,
                 data: {},
                 success: function (response) {
+                    console.log(response)
                     for (let i = 0; i < response.length; i++) {
                         let post = response[i];
-                        let id = post['id'];
+                        let id = post['commentsId'];
                         let username = post['username'];
                         let comments = post['comments'];
                         let contentsId = post['contentsId'];
                         let modifiedAt = post['modifiedAt'];
-                        console.log(5);
+
                         addComments(id, username, comments, contentsId, modifiedAt);
                     }
                 }
@@ -130,7 +131,7 @@
 
         function addComments(id, username, comments, contentsId, modifiedAt) {
             let tempHtml = makeComments(id, username, comments, contentsId, modifiedAt);
-            console.log(6);
+
             $('#cards-box2').append(tempHtml);
         }
 
@@ -138,7 +139,7 @@
             return `
                         <div class="card">
                             <div class="metadata">
-                               <div ${id}="${id}-name" class="name">
+                               <div id="${id}-name" class="name">
                                    ${username}
                                </div>
                                <div class="date">
@@ -146,15 +147,80 @@
                                </div>
                             </div>
 
-                            <div class="contents" id="${id}-contents" >
+                            <div class="contents" id="${id}-comments"  >
                                ${comments}
+                            </div>
+                            <div id="${id}-editarea" class="edit">
+                                <textarea id="${id}-textarea" class="te-edit"  cols="30" rows="5"></textarea>
+                            </div>
+
+                            <!-- 버튼 영역-->
+                            <div class="footer">
+                                <img id="${id}-edit" onclick="editPost(${id})" class="icon-start-edit" src="images/edit.png" alt="">
+                                <img id="${id}-delete" onclick="deleteOne(${id})" class="icon-delete" src="images/delete.png" alt="">
+                                <img id="${id}-submit" onclick="submitEdit(${id})" class="icon-end-edit" src="images/done.png" alt="">
                             </div>
 
                         </div>`;
         }
+///////////////////////////////////여기아래부터 댓글 수정 삭제 기능//////
+        function editPost(id) {
+            showEdits(id);
 
 
+            let comments = $(`#${id}-comments`).text().trim();
+            $(`#${id}-textarea`).val(comments);
+        }
 
+        function showEdits(id) {
+            $(`#${id}-editarea`).show();
+
+            $(`#${id}-submit`).show();
+            $(`#${id}-delete`).show();
+
+            $(`#${id}-comments`).hide();
+            $(`#${id}-edit`).hide();
+        }
+
+        function submitEdit(id) {
+            // 1. 작성 대상 댓글의 username과 contents 를 확인합니다.
+
+            let comments = $(`#${id}-textarea`).val().trim();
+                console.log(3)
+            // 2. 작성한 댓글이 올바른지 isValidContents 함수를 통해 확인합니다.
+            if (isValidComments(comments) == false) {
+                return;
+            }
+                console.log(4)
+            // 3. 전달할 data JSON으로 만듭니다.
+            let data = { 'comments': comments };
+                        console.log(5)
+            // 4. PUT /api/memos/{id} 에 data를 전달합니다.
+            $.ajax({
+                type: "PUT",
+                url: "/api/comments/"+id,
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    console.log(6)
+                    alert('메시지 변경에 성공하였습니다.');
+                    window.location.reload();
+                }
+            });
+        }
+
+        // 댓글을 삭제합니다.
+        function deleteOne(id) {
+
+            $.ajax({
+                type: "DELETE",
+                url: "/api/comments/"+id,
+                success: function (response) {
+                    alert('메시지 삭제에 성공하였습니다.');
+                    window.location.reload();
+                }
+            })
+        }
 
 
     </script>
@@ -341,6 +407,59 @@
             height: 30px;
             margin-bottom: 10px;
             margin-left: 70px;
+        }
+
+        .footer {
+            position: relative;
+            height: 40px;
+        }
+
+        .footer img.icon-start-edit {
+            cursor: pointer;
+            position: absolute;
+            bottom: 14px;
+            right: 55px;
+            width: 18px;
+            height: 18px;
+        }
+
+        .footer img.icon-end-edit {
+            cursor: pointer;
+            position: absolute;
+            display: none;
+            bottom: 14px;
+            right: 55px;
+            width: 20px;
+            height: 15px;
+        }
+
+        .footer img.icon-delete {
+            cursor: pointer;
+            position: absolute;
+            bottom: 12px;
+            right: 19px;
+            width: 14px;
+            height: 18px;
+        }
+
+        .contents {
+            padding: 0px 23px;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        .comments div.edit {
+            display: none;
+        }
+
+        .comments textarea.te-edit {
+            border-right: none;
+            border-top: none;
+            border-left: none;
+            resize: none;
+            border-bottom: 1px solid #212529;
+            width: 100%;
+            font-family: 'Spoqa Han Sans';
         }
     </style>
 
