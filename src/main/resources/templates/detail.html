@@ -15,6 +15,7 @@
     <script th:inline="javascript">
         $(document).ready(function () {
             getMessages();
+            getComments();
         })
 
         // 게시글을 불러옵니다.
@@ -75,7 +76,7 @@
             let username = $('#username').val();
 
                 let contentsId = location.href.split("id=")[1];
-                console.log(contentsId);
+
 
             if (isValidComments(comments) == false) {
                 return;
@@ -93,7 +94,7 @@
                 data: JSON.stringify(data),
                 success: function (response) {
                     alert('메시지가 성공적으로 작성되었습니다.');
-                    location.href = `/detail.html?id=${id}`;
+                    location.href = `/detail.html?id=${contentsId}`;
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert(xhr.status);
@@ -103,16 +104,14 @@
         }
         //////write.html에서 가져왓음 여까지 포스트방식 이후는 인덱스에서 가져온 겟방식
 
-        $(document).ready(function () {
-            getComments();
-        })
-
         // 댓글을 불러옵니다.
         function getComments() {
+            let contentsId = location.href.split("id=")[1];
             $('#cards-box2').empty();
+                console.log(4)
             $.ajax({
                 type: "GET",
-                url: "/api/comments",
+                url: "/api/comments/"+contentsId,
                 data: {},
                 success: function (response) {
                     for (let i = 0; i < response.length; i++) {
@@ -122,7 +121,7 @@
                         let comments = post['comments'];
                         let contentsId = post['contentsId'];
                         let modifiedAt = post['modifiedAt'];
-                        console.log(comments);
+                        console.log(5);
                         addComments(id, username, comments, contentsId, modifiedAt);
                     }
                 }
@@ -131,6 +130,7 @@
 
         function addComments(id, username, comments, contentsId, modifiedAt) {
             let tempHtml = makeComments(id, username, comments, contentsId, modifiedAt);
+            console.log(6);
             $('#cards-box2').append(tempHtml);
         }
 

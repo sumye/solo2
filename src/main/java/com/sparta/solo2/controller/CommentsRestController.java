@@ -27,15 +27,13 @@ public class CommentsRestController {
 
     private final CommentsRepository CommentsRepository;
     private final CommentsService CommentsService;
-    private Long id;
 
     //     댓글 전체 조회
-    @GetMapping("/api/comments")
-    public List<Comments> getComments() {
-
-
-        return CommentsRepository.findAllByContentsIdOrderByCreatedAtDesc(id);
+    @GetMapping("/api/comments/{contentsId}")
+    public List<Comments> getComments(@PathVariable Long contentsId) {
+        return CommentsRepository.findAllByContentsIdOrderByCreatedAtDesc(contentsId);
     }
+
 
 
     // 댓글 특정 조회
