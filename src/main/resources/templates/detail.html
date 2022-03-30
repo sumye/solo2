@@ -74,8 +74,8 @@
         function writeComments() {
             let comments = $('#comments').val();
             let username = $('#username').val();
-
-                let contentsId = location.href.split("id=")[1];
+            let loginuser = [[${username3}]]
+            let contentsId = location.href.split("id=")[1];
 
 
             if (isValidComments(comments) == false) {
@@ -84,7 +84,10 @@
             if (isValidComments(username) == false) {
                 return;
             }
-
+            if (loginuser == null) {
+                alert("로그인해주세요!");
+                location.href = "user/login"
+            }
 
             let data = { 'username': username, 'comments': comments ,'contentsId': contentsId};
             $.ajax({
@@ -137,12 +140,13 @@
 
         function makeComments(id, username, comments,contentsId, modifiedAt) {
             let loginusername = [[${username3}]];
-            console.log(loginusername);
-            console.log(username);
+
             let hide = "style=\"display:none\""
             if (loginusername == username) {
                 hide = ""
             }
+
+
             return `
                         <div class="card">
                             <div class="metadata">
@@ -504,7 +508,7 @@
 
             <textarea class="field" placeholder="댓글을 적어주세요" name="contents" id="comments" cols="30"
                       rows="10"></textarea>
-        <img src="../static/images/send.png" alt="" onclick="writeComments()">
+        <img src="/images/send.png" alt="" onclick="writeComments()">
     </div>
     <div id="cards-box2" class="area-read">
 

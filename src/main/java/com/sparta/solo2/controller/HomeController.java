@@ -11,7 +11,10 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        if(userDetails != null) model.addAttribute("username", userDetails.getUsername());
+        if(userDetails == null) {
+            return "index";
+        }
+        model.addAttribute("username", userDetails.getUsername());
         return "index";
     }
 
@@ -23,7 +26,14 @@ public class HomeController {
 
     @GetMapping("/detail.html")
     public String detail(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        if(userDetails == null) {
+
+            return "detail";
+        }
         model.addAttribute("username3", userDetails.getUsername());
         return "detail";
     }
+
+
 }
