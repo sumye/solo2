@@ -30,7 +30,8 @@ public class CommentsRestController {
 
     //     댓글 전체 조회
     @GetMapping("/api/comments/{contentsId}")
-    public List<Comments> getComments(@PathVariable Long contentsId) {
+    public List<Comments> getComments(@PathVariable Long contentsId ) {
+
         return CommentsRepository.findAllByContentsIdOrderByCreatedAtDesc(contentsId);
     }
 

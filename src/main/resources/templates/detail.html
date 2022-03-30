@@ -136,6 +136,13 @@
         }
 
         function makeComments(id, username, comments,contentsId, modifiedAt) {
+            let loginusername = [[${username3}]];
+            console.log(loginusername);
+            console.log(username);
+            let hide = "style=\"display:none\""
+            if (loginusername == username) {
+                hide = ""
+            }
             return `
                         <div class="card">
                             <div class="metadata">
@@ -155,7 +162,7 @@
                             </div>
 
                             <!-- 버튼 영역-->
-                            <div class="footer">
+                            <div class="footer" ${hide}>
                                 <img id="${id}-edit" onclick="editPost(${id})" class="icon-start-edit" src="images/edit.png" alt="">
                                 <img id="${id}-delete" onclick="deleteOne(${id})" class="icon-delete" src="images/delete.png" alt="">
                                 <img id="${id}-submit" onclick="submitEdit(${id})" class="icon-end-edit" src="images/done.png" alt="">
@@ -203,7 +210,7 @@
                 data: JSON.stringify(data),
                 success: function (response) {
                     console.log(6)
-                    alert('메시지 변경에 성공하였습니다.');
+                    alert('댓글 변경에 성공하였습니다.');
                     window.location.reload();
                 }
             });
@@ -211,12 +218,14 @@
 
         // 댓글을 삭제합니다.
         function deleteOne(id) {
-
+            if (confirm("정말 삭제하시겠습니까?") == false) {
+                return
+            }
             $.ajax({
                 type: "DELETE",
                 url: "/api/comments/"+id,
                 success: function (response) {
-                    alert('메시지 삭제에 성공하였습니다.');
+                    alert('댓글 삭제에 성공하였습니다.');
                     window.location.reload();
                 }
             })
