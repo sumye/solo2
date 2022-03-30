@@ -72,24 +72,21 @@
         }
 
         function writeComments() {
-            let comments = $('#comments').val();
-            let username = $('#username').val();
             let loginuser = [[${username3}]]
+            if (loginuser === null) {
+                alert("로그인해주세요!");
+                location.href = "user/login"
+            }
+            let comments = $('#comments').val();
             let contentsId = location.href.split("id=")[1];
 
 
             if (isValidComments(comments) == false) {
                 return;
             }
-            if (isValidComments(username) == false) {
-                return;
-            }
-            if (loginuser == null) {
-                alert("로그인해주세요!");
-                location.href = "user/login"
-            }
 
-            let data = { 'username': username, 'comments': comments ,'contentsId': contentsId};
+
+            let data = {  'comments': comments ,'contentsId': contentsId};
             $.ajax({
                 type: "POST",
                 url: "/api/comments",

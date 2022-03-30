@@ -30,19 +30,14 @@ public class Comments extends Timestamped {
 
 
     // 게시글 생성
-    public Comments(CommentsRequestDto requestDto) {
+    public Comments(CommentsRequestDto requestDto , String username) {
 
-        this.username = requestDto.getUsername();
+        this.username = username;
         this.comments = requestDto.getComments();
         this.contentsId = requestDto.getContentsId();
     }
 
-    public Comments(String username , String  comments, Long contentsId) {
 
-        this.username = username;
-        this.comments = comments;
-        this.contentsId = contentsId;
-    }
 
     // 게시글 수정
     public void update(CommentsRequestDto requestDto) {

@@ -48,9 +48,10 @@ public class CommentsRestController {
     // 댓글 생성
     @PostMapping("/api/comments")
     public Comments createComments(@RequestBody CommentsRequestDto requestDto , @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        requestDto.setUsername(userDetails.getUsername()); ///로그인한 유저로 바꾸기위해서 추가
 
-        Comments Comments = new Comments(requestDto);
+
+        Comments Comments = new Comments(requestDto , userDetails.getUser().getUsername());
+
 
         return CommentsRepository.save(Comments);
     }
