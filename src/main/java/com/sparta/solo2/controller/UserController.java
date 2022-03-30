@@ -2,11 +2,14 @@ package com.sparta.solo2.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.solo2.dto.SignupRequestDto;
+import com.sparta.solo2.security.UserDetailsImpl;
 import com.sparta.solo2.service.KakaoUserService;
 import com.sparta.solo2.service.UserService;
 import com.sparta.solo2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +29,12 @@ public class UserController {
 
     // 회원 로그인 페이지
     @GetMapping("/user/login")
-    public String login() {
+    public String login(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
+        if(userDetails != null) {
+            model.addAttribute("loggedIn", true);
+            model.addAttribute("message", "이미 로그인 하셨습니다.");
+        }
+
         return "login";
     }
 
