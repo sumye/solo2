@@ -35,7 +35,7 @@ public class UserService {
             return "아이디를 확인해 주세요.";
         }
         // 비밀번호 유효성 검사
-        if ( ( username.equals(password) || password.length() < 4 ) || !password.equals(passwordcheck) ) {
+        if ( ( password.contains(username)|| password.length() < 4 ) || !password.equals(passwordcheck) ) {
             return "비밀번호를 확인해 주세요.";
         }
 // 회원 ID 중복 확인
